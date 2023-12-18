@@ -25,6 +25,12 @@
 
 # 🖼 Скриншоты
 
+Основное поле:
+
+![image](https://github.com/Nico-kun123/Simple-Weather-App/assets/77405288/52651537-ad97-4638-82e3-4cdd9ed36d4b)
+
+Основное поле (не корректные данные):
+
 ![image](https://github.com/Nico-kun123/Simple-Weather-App/assets/77405288/a2adee10-1d40-44f0-ab32-e23213af13ff)
 
 ---
@@ -62,6 +68,8 @@ npm install
 ---
 
 Содержание "package.json":
+
+![image](https://github.com/Nico-kun123/Simple-Weather-App/assets/77405288/6275e651-cf5e-4b2d-bf8f-53b62217d874)
 
 В проекте есть следующие скрипты:
 
