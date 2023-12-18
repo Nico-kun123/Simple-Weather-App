@@ -25,6 +25,8 @@
 
 # 🖼 Скриншоты
 
+![image](https://github.com/Nico-kun123/Simple-Weather-App/assets/77405288/a2adee10-1d40-44f0-ab32-e23213af13ff)
+
 ---
 
 # 💻 Технологии
