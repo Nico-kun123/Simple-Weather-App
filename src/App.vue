@@ -6,14 +6,8 @@ import Weather from "./components/WeatherStuff.vue";
   <header>
     <div class="wrapper">
       <header>
-        <div class="logo" style="width: fit-content; background-color: antiquewhite; border-radius: 25%;">
-          <img
-            alt="Vue logo"
-            style="padding: 15px; padding-top: 25px;"
-            src="./assets/logo.svg"
-            width="125"
-            height="125"
-          />
+        <div class="logo">
+          <img alt="Vue logo" src="./assets/logo.svg" width="50" height="50" />
         </div>
       </header>
 
@@ -22,14 +16,41 @@ import Weather from "./components/WeatherStuff.vue";
   </header>
 </template>
 
-<style scoped>
+<style lang="scss">
+.separator {
+  border-bottom-width: 3px;
+  border-bottom-color: #000;
+  border-bottom-style: double;
+  margin: 1em 0;
+  width: 100%;
+}
+
 header {
   line-height: 1.5;
 }
 
+h1 {
+  font-weight: bolder;
+}
+
+h2 {
+  font-weight: bold;
+}
 .logo {
-  animation: app-logo-spin infinite 20s linear;
-  display: block;
-  margin: 0 auto 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 1em auto;
+
+  background-color: antiquewhite;
+  border-radius: 25%;
+
+  width: 5em;
+  height: 5em;
+
+  & img {
+    width: 4em;
+    height: max-content;
+  }
 }
 </style>

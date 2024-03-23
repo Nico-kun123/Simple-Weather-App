@@ -1,6 +1,10 @@
 @import './base.css';
 /* @import '/src/components/weather_bg/rain.jpg'; */
 
+* {
+  line-height: normal;
+}
+
 #app {
   max-width: 1280px;
   margin: 0 auto;

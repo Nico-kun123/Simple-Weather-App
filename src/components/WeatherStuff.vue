@@ -1,77 +1,94 @@
 <!-- Component for weather app (api key is from OpenWeather) -->
-<!-- prettier-ignore -->
+
 <template>
   <div class="weather">
     <input
       type="text"
-      :placeholder="$t('placeHolder')"
+      :placeholder="$t('message.placeHolder')"
       v-model="city"
       @keyup.enter="getWeather"
     />
-    <br />
-    <br />
-    <p v-if="weather == 'Error'" style="color: red;">
-        {{ $t("errorMsg")  }}
+
+    <p v-if="weather == 'Error'" style="color: red">
+      {{ $t("message.errorMsg") }}
     </p>
-    <div id="wrapper" style="display: none;">
-        <div style="border-bottom-width: 3px; border-bottom-color: #000; border-bottom-style: dashed; padding-bottom: 1rem;">
-            <div style="display: grid; grid-template-columns: 12rem auto; justify-items: center; grid-row-gap: 1rem; align-items: center; justify-content: center;">
-                <h1 style="font-weight: bolder">Weather in</h1>
-                <h1 style="color: rgb(0, 255, 115); text-shadow: 2px 2px 2px #000, -2px 2px 2px #000, -2px -2px 0 #000, 2px -2px 0 #000; font-weight: bolder;">{{ weather.name }}</h1>
-            </div>
-            <h2 style="font-weight: 600">Country: {{ weather.sys?.country }}</h2>
-            <h2>{{ weather.main?.temp }}°F ({{ ((weather.main?.temp - 32) * 5/9).toFixed(1) }}°C)</h2>
-            <h3>{{ weather.weather?.[0].description }}</h3>
-        </div>
-    
-        <br />
-        <h3>{{ $t('feelsLike') }} {{ weather.main?.feels_like }}°F ({{ ((weather.main?.feels_like - 32) * 5/9).toFixed(1) }}°C)</h3>
-        <br />
-        <h3>{{ $t('humidity') }}{{ weather.main?.humidity }}%</h3>
-        <h3>{{ $t('wind') }}{{ weather.wind?.speed }} {{ $t('miles') }} ({{ (weather.wind?.speed * 1.609344).toFixed(2) }} {{ $t('kilometers') }})</h3>
-        <h3>{{ $t('visibility') }}{{ weather.visibility }} {{ $t('meters') }}</h3>
-        <h3>{{ $t('pressure') }}{{ (weather.main?.pressure / 1.33322387415 ).toFixed(1) }} {{ $t('pressureSymbol') }}</h3>
-        <h3>{{ $t('highTemp') }}{{ weather.main?.temp_max }}°F ({{ ((weather.main?.temp_max - 32) * 5/9).toFixed(1) }}°C)</h3>
-        <h3>{{ $t('lowTemp') }}{{ weather.main?.temp_min }}°F ({{ ((weather.main?.temp_min - 32) * 5/9).toFixed(1) }}°C)</h3>
-        <h3>{{ $t('humidity') }}{{ weather.clouds?.all }}%</h3>
-        <br>
-        <h3>{{ $t('sunrise') }}{{ sunrise }}</h3>
-        <h3>{{ $t('sunset') }}{{ sunset }}</h3>
-        <h3>{{ $t('timezone') }}{{ weather.timezone }}</h3>
-    
+    <div id="wrapper" style="display: none">
+      <h1>Weather in</h1>
+      <h1 class="city-name">
+        {{ weather.name }}
+      </h1>
+
+      <h2>Country: {{ weather.sys?.country }}</h2>
+      <h3>
+        {{ weather.main?.temp }}°F ({{
+          (((weather.main?.temp - 32) * 5) / 9).toFixed(1)
+        }}°C)
+      </h3>
+      <h3>{{ weather.weather?.[0].description }}</h3>
+
+      <div class="separator"></div>
+
+      <p>
+        {{ $t("message.feelsLike") }} {{ weather.main?.feels_like }}°F ({{
+          (((weather.main?.feels_like - 32) * 5) / 9).toFixed(1)
+        }}°C)
+      </p>
+      <br />
+      <p>{{ $t("message.humidity") }}{{ weather.main?.humidity }}%</p>
+      <p>
+        {{ $t("message.wind") }}{{ weather.wind?.speed }} {{ $t("message.miles") }} ({{
+          (weather.wind?.speed * 1.609344).toFixed(2)
+        }}
+        {{ $t("message.kilometers") }})
+      </p>
+      <p>{{ $t("message.visibility") }}{{ weather.visibility }} {{ $t("message.meters") }}</p>
+      <p>
+        {{ $t("message.pressure")
+        }}{{ (weather.main?.pressure / 1.33322387415).toFixed(1) }}
+        {{ $t("message.pressureSymbol") }}
+      </p>
+      <p>
+        {{ $t("message.highTemp") }}{{ weather.main?.temp_max }}°F ({{
+          (((weather.main?.temp_max - 32) * 5) / 9).toFixed(1)
+        }}°C)
+      </p>
+      <p>
+        {{ $t("message.lowTemp") }}{{ weather.main?.temp_min }}°F ({{
+          (((weather.main?.temp_min - 32) * 5) / 9).toFixed(1)
+        }}°C)
+      </p>
+      <p>{{ $t("message.humidity") }}{{ weather.clouds?.all }}%</p>
+      <br />
+      <p>{{ $t("message.sunrise") }}{{ sunrise }}</p>
+      <p>{{ $t("message.sunset") }}{{ sunset }}</p>
+      <p>{{ $t("message.timezone") }}{{ weather.timezone }}</p>
     </div>
-    <br>
-    <div id="wrapper2" style="display: none;">
-        <div style="padding-bottom: 1rem;">
-            <div style="display: grid; grid-template-columns: 12rem auto; justify-items: center; grid-row-gap: 1rem; align-items: center; justify-content: center;">
-                <h3 style="font-weight: bolder">{{ $t('forecast') }}</h3>
-            </div>
-        </div>
-        <ul style="list-style: none; margin-left: -2.5rem;">
-            <li v-for="item in predictions">
-                <h3>{{ item.date }}, {{ item.temp }}°F ({{ ((item.temp - 32) * 5/9).toFixed(1) }}°C)</h3>
-                <br>
-            </li>
-        </ul>
+
+    <div id="forecast" style="display: none">
+      <div class="separator"></div>
+      <h3 style="font-weight: bolder">{{ $t("message.forecast") }}</h3>
+      <br />
+      <ul style="list-style: none; padding: 0">
+        <li v-for="item in predictions" style="line-height: 1.5">
+          {{ item.date }}, {{ item.temp }}°F ({{
+            (((item.temp - 32) * 5) / 9).toFixed(1)
+          }}°C)
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
-//? Importing the ref function from vue
 import { ref } from "vue";
 
 //! API key from OpenWeather
 const api = "b6d2d5e764dfc9d33bdc413bc0becacd";
 
-//? Exporting the component
 export default {
-  //? Name of the component
   name: "WeatherStuff",
 
-  //? Data for the component
   setup() {
-    //? Creating reactive variables
     const city = ref("");
     const weather = ref({});
     const forecast = ref({});
@@ -91,7 +108,7 @@ export default {
         //? Checking if the location is valid
         if (weatherData.cod === "400" || weatherData.cod === "404") {
           document.getElementById("wrapper").style.display = "none";
-          document.getElementById("wrapper2").style.display = "none";
+          document.getElementById("forecast").style.display = "none";
           weather.value = "Error";
           // Удаление класса, который меняет фоновый цвет
           let name = document.body.classList;
@@ -99,7 +116,7 @@ export default {
         } else {
           setTimeout(() => {
             document.getElementById("wrapper").style.display = "block";
-            document.getElementById("wrapper2").style.display = "block";
+            document.getElementById("forecast").style.display = "block";
           }, 100);
 
           // Changing the background color based on the weather
@@ -215,45 +232,50 @@ body {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   margin: 0 auto;
-  max-width: max-content;
-  min-width: max-content;
-  padding: 20px;
+  min-width: fit-content;
+  padding: 1em;
   text-align: center;
 }
 #wrapper {
-  border-bottom: black 3px dashed;
-  padding-bottom: 15px;
+  width: 100%;
 }
 input {
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
   padding: 10px;
-  width: 200px;
-  min-width: max-content;
+  width: 100%;
+}
+.city-name {
+  color: rgb(0, 255, 115);
+  text-shadow: 2px 2px 2px #000, -2px 2px 2px #000, -2px -2px 0 #000,
+    2px -2px 0 #000;
+  font-weight: bolder;
 }
 .rain_bg {
-  background-image: url("/src/components/weather_bg/rain.jpg");
+  background-image: url("/src/assets/weather_bg/rain.jpg");
   animation-name: fadeInOpacity;
 }
 .cloudy_bg {
-  background-image: url("/src/components/weather_bg/cloudy.jpg");
+  background-image: url("/src/assets/weather_bg/cloudy.jpg");
   animation-name: fadeInOpacity;
 }
 .sunny_bg {
-  background-image: url("/src/components/weather_bg/sunny.jpg");
+  background-image: url("/src/assets/weather_bg/sunny.jpg");
   animation-name: fadeInOpacity;
 }
 .snow_bg {
-  background-image: url("/src/components/weather_bg/snow.jpg");
+  background-image: url("/src/assets/weather_bg/snow.jpg");
   animation-name: fadeInOpacity;
 }
-@keyframes fadeInOpacity {
-  0% {
-    opacity: 0;
+
+@media (min-width: 320px) {
+  h3 {
+    font-size: 1em;
   }
-  100% {
-    opacity: 1;
+  .weather {
+    margin: 0 auto;
+    width: fit-content;
   }
 }
 </style>
